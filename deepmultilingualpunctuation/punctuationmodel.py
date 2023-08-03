@@ -6,9 +6,9 @@ import torch
 class PunctuationModel():
     def __init__(self, model = "oliverguhr/fullstop-punctuation-multilang-large") -> None:        
         if torch.cuda.is_available():
-            self.pipe = pipeline("ner",model, aggregation_strategy="none", device=0)
+            self.pipe = pipeline("ner",model, aggregation_strategy="none", device_map="auto", load_in_4bit=True, offload_folder='./.cache')
         else:
-            self.pipe = pipeline("ner",model, aggregation_strategy="none")        
+            self.pipe = pipeline("ner",model, aggregation_strategy="none")
 
     def preprocess(self,text):
         #remove markers except for markers in numbers 
